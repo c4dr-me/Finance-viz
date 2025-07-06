@@ -9,7 +9,7 @@ Finance Visualizer is a modern web application for tracking budgets, expenses, a
 - TypeScript
 - Tailwind CSS
 - MongoDB
-- Socket.IO (real-time updates)
+- Pusher (real-time updates)
 
 ## Project Setup
 
@@ -27,10 +27,11 @@ Finance Visualizer is a modern web application for tracking budgets, expenses, a
      ```env
      # .env.example
      MONGODB_URI=your_mongodb_connection_string
-     NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
-     NEXT_PUBLIC_PUSHER_APP_ID=
+     PUSHER_APP_ID=
+     PUSHER_KEY=
+     PUSHER_SECRET=
+     PUSHER_CLUSTER=
      NEXT_PUBLIC_PUSHER_KEY=
-     NEXT_PUBLIC_PUSHER_SECRET=
      NEXT_PUBLIC_PUSHER_CLUSTER=
      ```
 4. **Run the development server**
