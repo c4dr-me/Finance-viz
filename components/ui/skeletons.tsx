@@ -66,7 +66,7 @@ export function DashboardSummarySkeleton() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 max-h-[300px]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 h-auto lg:h-[250px]">
         <Card className="bg-gradient-to-br from-orange-700 to-amber-800 border-none text-white">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
@@ -170,7 +170,7 @@ export function DashboardSummarySkeleton() {
 
 export function TransactionFormSkeleton() {
   return (
-    <Card className="bg-gray-800/50 border-gray-700 min-h-[90%]">
+    <Card className="bg-gray-800/50 border-gray-700 flex flex-col min-h-0 md:min-h-[515px]">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Skeleton className="h-5 w-5 bg-gray-600" />
@@ -210,7 +210,7 @@ export function TransactionFormSkeleton() {
 
 export function TransactionListSkeleton() {
   return (
-    <Card className="bg-gray-800/50 border-gray-700 min-h-[90%]">
+    <Card className="bg-gray-800/50 border-gray-700 flex flex-col min-h-0 md:min-h-[515px]">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Skeleton className="h-5 w-5 bg-gray-600" />
@@ -247,8 +247,9 @@ export function ChartSkeleton() {
         <div className="flex items-center justify-end">
           <div className="flex items-center gap-2">
             <Skeleton className="h-5 w-5 bg-gray-600" />
-            <Skeleton className="h-6 w-32 bg-gray-600" />
+            <Skeleton className="h-6 w-22 bg-gray-600" />
           </div>
+          <Skeleton className="h-5 w-5 bg-gray-600" />
         </div>
         <Skeleton className="h-4 w-48 bg-gray-700/50" />
       </CardHeader>
