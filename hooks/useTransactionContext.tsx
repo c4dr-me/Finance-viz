@@ -1,9 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useSocket } from './useSocket';
+import pusherClient from '@/lib/pusherClient';
 
-// Transaction type
 export type Transaction = {
   _id: string;
   amount: number;
@@ -15,7 +14,6 @@ export type Transaction = {
   updatedAt: string;
 };
 
-// Context type
 interface TransactionContextType {
   transactions: Transaction[];
   loading: boolean;
@@ -38,10 +36,8 @@ interface TransactionContextType {
   refetch: () => Promise<void>;
 }
 
-// Create context
 const TransactionContext = createContext<TransactionContextType | undefined>(undefined);
 
-// Hook to use the context
 export const useTransactionsContext = () => {
   const context = useContext(TransactionContext);
   if (!context) {
@@ -50,22 +46,17 @@ export const useTransactionsContext = () => {
   return context;
 };
 
-// Provider component
 export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { socket, isConnected } = useSocket();
 
-  // Fetch all transactions
-  const fetchTransactions = useCallback(async () => {
-    setLoading(true);
+  const fetchTransactions = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
     setError(null);
-    
     try {
       const response = await fetch('/api/transactions');
       const data = await response.json();
-      
       if (data.success) {
         setTransactions(data.transactions);
       } else {
@@ -74,30 +65,24 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
     } catch {
       setError('Network error');
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   }, []);
 
-  // Add new transaction
-  const addTransaction = useCallback(async (transactionData: {
-    amount: number;
-    description: string;
-    date: string;
-    category?: string;
-    type: 'income' | 'expense';
-  }) => {
+  const addTransaction = useCallback(async (transactionData: Omit<Transaction, '_id' | 'createdAt' | 'updatedAt'>) => {
     try {
       const response = await fetch('/api/transactions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(transactionData),
       });
-      
       const data = await response.json();
-      
       if (data.success) {
+        await fetch('/api/transactions/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transaction: data.transaction }),
+        });
         return { success: true, transaction: data.transaction };
       } else {
         return { success: false, error: data.error };
@@ -107,45 +92,20 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   }, []);
 
-  // Delete transaction
-  const deleteTransaction = useCallback(async (id: string) => {
-    try {
-      const response = await fetch(`/api/transactions/${id}`, {
-        method: 'DELETE',
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        return { success: true };
-      } else {
-        return { success: false, error: data.error };
-      }
-    } catch {
-      return { success: false, error: 'Network error' };
-    }
-  }, []);
-
-  // Update transaction
-  const updateTransaction = useCallback(async (id: string, transactionData: {
-    amount: number;
-    description: string;
-    date: string;
-    category?: string;
-    type: 'income' | 'expense';
-  }) => {
+  const updateTransaction = useCallback(async (id: string, transactionData: Omit<Transaction, '_id' | 'createdAt' | 'updatedAt'>) => {
     try {
       const response = await fetch(`/api/transactions/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(transactionData),
       });
-      
       const data = await response.json();
-      
       if (response.ok) {
+        await fetch('/api/transactions/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transaction: data }),
+        });
         return { success: true, transaction: data };
       } else {
         return { success: false, error: data.error };
@@ -155,43 +115,44 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   }, []);
 
-  useEffect(() => {
-    if (!socket || !isConnected) {
-      return;
-    }
-
-    const handleTransactionUpdate = (updateData: {
-      action: 'created' | 'updated' | 'deleted';
-      transaction: Transaction;
-    }) => {
-      const { action, transaction } = updateData;
-      
-      if (action === 'created') {
-        setTransactions(prev => {
-          const exists = prev.some(t => t._id === transaction._id);
-          if (exists) {
-            return prev;
-          }
-          return [transaction, ...prev];
+  const deleteTransaction = useCallback(async (id: string) => {
+    try {
+      const response = await fetch(`/api/transactions/${id}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      if (data.success) {
+        await fetch('/api/transactions/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transaction: { _id: id } }),
         });
-      } else if (action === 'deleted') {
-        setTransactions(prev => prev.filter(t => t._id !== transaction._id));
-      } else if (action === 'updated') {
-        setTransactions(prev => prev.map(t => 
-          t._id === transaction._id ? transaction : t
-        ));
+        return { success: true };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch {
+      return { success: false, error: 'Network error' };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!pusherClient) return;
+    const channel = pusherClient.subscribe('transactions');
+    const handleUpdate = () => {
+      fetchTransactions(false); 
+    };
+    channel.bind('updated', handleUpdate);
+    return () => {
+      channel.unbind('updated', handleUpdate);
+      if (pusherClient) {
+        pusherClient.unsubscribe('transactions');
       }
     };
-
-    socket.on('transaction-update', handleTransactionUpdate);
-
-    return () => {
-      socket.off('transaction-update', handleTransactionUpdate);
-    };
-  }, [socket, isConnected]);
+  }, [fetchTransactions]);
 
   useEffect(() => {
-    fetchTransactions();
+    fetchTransactions(true); 
   }, [fetchTransactions]);
 
   const value: TransactionContextType = {

@@ -28,6 +28,10 @@ Finance Visualizer is a modern web application for tracking budgets, expenses, a
      # .env.example
      MONGODB_URI=your_mongodb_connection_string
      NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
+     NEXT_PUBLIC_PUSHER_APP_ID=
+     NEXT_PUBLIC_PUSHER_KEY=
+     NEXT_PUBLIC_PUSHER_SECRET=
+     NEXT_PUBLIC_PUSHER_CLUSTER=
      ```
 4. **Run the development server**
    ```sh

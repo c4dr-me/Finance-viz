@@ -113,7 +113,7 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
 
   return (
     <>
-      <Card className="bg-gray-900/50 border-gray-700 flex flex-col max-h-none md:h-[515px] md:max-h-[80vh]">
+      <Card className="bg-gray-900/50 border-gray-700 h-[515px] flex flex-col max-h-[80vh] sm:max-h-[515px]">
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
@@ -147,7 +147,7 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
               </div>
             </div>
           ) : (
-            <div className="space-y-3 max-h-[60vh] md:max-h-full overflow-y-auto pr-1 sm:pr-2">
+            <div className="space-y-3 max-h-[60vh] sm:max-h-full overflow-y-auto pr-1 sm:pr-2">
               {sortedTransactions.map((transaction) => {
                 const CategoryIcon = getCategoryIcon(transaction.category);
                 const categoryColor = getCategoryColor(transaction.category);
@@ -204,7 +204,7 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
                           {transaction.type === 'income' ? '+' : '-'}{formatCurrency(Math.abs(transaction.amount))}
                         </p>
                       </div>
-                      <div className="flex flex-col items-center gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
                           variant="ghost"
                           size="sm"
