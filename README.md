@@ -50,15 +50,15 @@ Finance Visualizer is a modern web application for tracking budgets, expenses, a
 
 ### Dashboard Overview
 
-![Dashboard Overview](image_1)
+![Dashboard Overview](public/image_1.png)
 
 ### Spending Insights
 
-![Spending Insights](image)
+![Spending Insights](public/image.png)
 
 ### Category Analysis
 
-![Category Analysis](image_2)
+![Category Analysis](public/image_2.png)
 
 ## License
 
