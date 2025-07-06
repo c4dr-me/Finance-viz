@@ -77,7 +77,7 @@ export function BudgetEditor({ isOpen, onClose, analytics }: BudgetEditorProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-gray-700 text-gray-100 max-w-4xl">
+      <DialogContent className="bg-gray-900 border-gray-700 text-gray-100 max-w-full w-[90vw] sm:max-w-lg md:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl text-gray-100 flex items-center gap-2">
             <Settings className="h-5 w-5" />
@@ -88,7 +88,7 @@ export function BudgetEditor({ isOpen, onClose, analytics }: BudgetEditorProps) 
           </DialogDescription>
         </DialogHeader>
         <div className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6">
             {getCategoriesByType('expense').map((category) => (
               <div key={category.id} className="space-y-2">
                 <label className="text-sm text-gray-300 flex items-center justify-between">
@@ -139,28 +139,28 @@ export function BudgetEditor({ isOpen, onClose, analytics }: BudgetEditorProps) 
               </div>
             ))}
           </div>
-          <div className="flex justify-between items-center mt-6">
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center mt-6 gap-2 sm:gap-0 w-full">
             <Button
               type="button"
               variant="outline"
               onClick={handleClearAll}
-              className="bg-gray-800 border-gray-700 text-red-400 hover:bg-red-900/20 hover:text-red-300"
+              className="bg-gray-800 border-gray-700 text-red-400 hover:bg-red-900/20 hover:text-red-300 w-full sm:w-auto mb-2 sm:mb-0"
             >
               <Trash2 className="h-4 w-4 mr-2" />
               Clear All
             </Button>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               <Button
                 variant="outline"
                 onClick={onClose}
-                className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 w-full sm:w-auto"
               >
                 Close
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
               >
                 {saving ? (
                   <>

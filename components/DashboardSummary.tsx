@@ -43,7 +43,7 @@ export function DashboardSummary() {
 
       <MetricsGrid analytics={analytics} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[250px]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto lg:h-[250px]"> 
         <BudgetOverview 
           analytics={analytics}
           showBudgetEditor={showBudgetEditor}

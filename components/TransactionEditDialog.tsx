@@ -137,7 +137,7 @@ export function TransactionEditDialog({ transaction, isOpen, onClose }: Transact
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Transaction Type */}
+         
           <div className="space-y-2">
             <Label htmlFor="type" className="text-gray-200">Type</Label>
             <Select value={type} onValueChange={(value: 'income' | 'expense') => setType(value)}>
@@ -161,7 +161,6 @@ export function TransactionEditDialog({ transaction, isOpen, onClose }: Transact
             </Select>
           </div>
 
-          {/* Amount */}
           <div className="space-y-2">
             <Label htmlFor="amount" className="text-gray-200">Amount ($)</Label>
             <Input
@@ -188,7 +187,6 @@ export function TransactionEditDialog({ transaction, isOpen, onClose }: Transact
             {errors.amount && <p className="text-red-400 text-sm">{errors.amount}</p>}
           </div>
 
-          {/* Description */}
           <div className="space-y-2">
             <Label htmlFor="description" className="text-gray-200">Description</Label>
             <Textarea
@@ -203,7 +201,6 @@ export function TransactionEditDialog({ transaction, isOpen, onClose }: Transact
             {errors.description && <p className="text-red-400 text-sm">{errors.description}</p>}
           </div>
 
-          {/* Category */}
           <div className="space-y-2">
             <Label htmlFor="category" className="text-gray-200">Category</Label>
             <Select value={category} onValueChange={setCategory} disabled={loading}>

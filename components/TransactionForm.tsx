@@ -18,7 +18,7 @@ export function TransactionForm({ onTransactionAdded }: { onTransactionAdded?: (
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [type, setType] = useState<'income' | 'expense'>('expense');
-  const [category, setCategory] = useState(() => getDefaultCategory('expense').id); // Use default category safely
+  const [category, setCategory] = useState(() => getDefaultCategory('expense').id);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isClient, setIsClient] = useState(false);
@@ -45,7 +45,6 @@ export function TransactionForm({ onTransactionAdded }: { onTransactionAdded?: (
       newErrors.amount = 'Amount must be greater than 0';
     }
     
-    // Ensure amount is not negative
     if (parseFloat(amount) < 0) {
       newErrors.amount = 'Amount cannot be negative';
     }
@@ -107,7 +106,7 @@ export function TransactionForm({ onTransactionAdded }: { onTransactionAdded?: (
   };
 
   return (
-    <Card className="bg-gray-900/50 border-gray-700 h-full min-h-[515px] flex flex-col">
+    <Card className="bg-gray-900/50 border-gray-700 flex flex-col min-h-0 md:min-h-[515px]">
       <CardHeader>
         <CardTitle className="text-violet-400">Add New Transaction</CardTitle>
         <CardDescription className="text-gray-400">

@@ -113,15 +113,15 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
 
   return (
     <>
-      <Card className="bg-gray-900/50 border-gray-700 h-[515px] flex flex-col">
+      <Card className="bg-gray-900/50 border-gray-700 flex flex-col max-h-none md:h-[515px] md:max-h-[80vh]">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
-              <CardTitle className="text-emerald-400 flex items-center gap-2">
+              <CardTitle className="text-emerald-400 flex items-center gap-2 text-base sm:text-lg">
                 <Wallet className="h-5 w-5" />
                 Transaction History
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-gray-400 text-xs sm:text-sm">
                 Recent income and expense transactions
               </CardDescription>
             </div>
@@ -130,8 +130,7 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
             )}
           </div>
         </CardHeader>
-        
-        <CardContent className="flex-1 overflow-hidden">
+        <CardContent className="flex-1 overflow-hidden p-2 sm:p-4">
           {loading && transactions.length === 0 ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center text-gray-400">
@@ -148,17 +147,16 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
               </div>
             </div>
           ) : (
-            <div className="space-y-3 max-h-full overflow-y-auto pr-2">
+            <div className="space-y-3 max-h-[60vh] md:max-h-full overflow-y-auto pr-1 sm:pr-2">
               {sortedTransactions.map((transaction) => {
                 const CategoryIcon = getCategoryIcon(transaction.category);
                 const categoryColor = getCategoryColor(transaction.category);
-                
                 return (
                   <div
                     key={transaction._id}
-                    className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700/50 hover:border-gray-600/50 transition-colors group"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 sm:p-3 bg-gray-800/50 rounded-lg border border-gray-700/50 hover:border-gray-600/50 transition-colors group gap-2 sm:gap-0"
                   >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 w-full">
                       <div 
                         className="p-2 rounded-lg"
                         style={{ backgroundColor: `${categoryColor}20` }}
@@ -168,10 +166,9 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
                           style={{ color: categoryColor }}
                         />
                       </div>
-                      
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="text-gray-200 font-medium truncate">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 mb-1">
+                          <p className="text-gray-200 font-medium truncate max-w-[120px] sm:max-w-[200px]">
                             {transaction.description}
                           </p>
                           <Badge 
@@ -192,25 +189,22 @@ export function TransactionList({ onTransactionChange }: { onTransactionChange?:
                             </span>
                           </Badge>
                         </div>
-                        
-                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-400">
                           <span>{getCategoryName(transaction.category)}</span>
-                          <Separator orientation="vertical" className="h-3" />
+                          <Separator orientation="vertical" className="h-3 hidden sm:inline-block" />
                           <span>{formatDate(transaction.date)}</span>
                         </div>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        <p className={`font-semibold text-lg ${
+                    <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                      <div className="text-right w-full sm:w-auto">
+                        <p className={`font-semibold text-base sm:text-lg ${
                           transaction.type === 'income' ? 'text-emerald-400' : 'text-red-400'
                         }`}>
                           {transaction.type === 'income' ? '+' : '-'}{formatCurrency(Math.abs(transaction.amount))}
                         </p>
                       </div>
-                      
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex flex-col items-center gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
                           variant="ghost"
                           size="sm"

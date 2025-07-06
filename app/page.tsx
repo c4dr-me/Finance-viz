@@ -49,24 +49,25 @@ function HomePage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+        <>
         {isLoading ? <DashboardSummarySkeleton /> : <DashboardSummary />}
-        
+        </>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-8">
-            <div className="h-[515px]">
+          <div className="space-y-4 md:space-y-12">
+            <div className="h-auto md:h-[515px] mb-6 md:mb-8">
               {isLoading ? <TransactionFormSkeleton /> : <TransactionForm />}
             </div>
-            <div className="h-[515px]">
+            <div className="h-auto md:h-[515px] mb-6 md:mb-0">
               {isLoading ? <TransactionListSkeleton /> : <TransactionList />}
             </div>
           </div>
 
           <div className="space-y-8">
-            <div className="h-[515px]">
+            <div className="h-auto md:h-[515px] mb-6 md:mb-8">
               {isLoading ? <ExpenseChartSkeleton /> : <ExpenseChart />}
             </div>
-            <div className="h-[515px]">
+            <div className="h-auto md:h-[515px] mb-6 md:mb-0">
               {isLoading ? <ChartSkeleton /> : <TopCategoriesChart />}
             </div>
           </div>

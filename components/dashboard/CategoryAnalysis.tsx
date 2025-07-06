@@ -216,17 +216,17 @@ export function CategoryAnalysis({
             <div className="flex justify-center gap-4 text-xs">
               {chartType === 'area' ? (
                 <>
-                  <div className="flex items-center -mt-30 gap-1">
+                  <div className="flex items-center mt-2 md:-mt-6 gap-1">
                     <div className="w-3 h-2 bg-violet-500/60 rounded-sm"></div>
                     <span className="text-indigo-200">Budget</span>
                   </div>
-                  <div className="flex items-center -mt-30 gap-1">
+                  <div className="flex items-center mt-2 md:-mt-6 gap-1">
                     <div className="w-3 h-2 bg-amber-500/80 rounded-sm"></div>
                     <span className="text-indigo-200">Spent</span>
                   </div>
                 </>
               ) : (
-                <div className="flex flex-col items-center -mt-14">
+                <div className="flex flex-col items-center mt-2 md:-mt-6">
                   <span className="text-indigo-200/60 text-[10px]">
                     Showing top {Math.min(15, Object.keys(analytics.categoryTotals || {}).length)} categories by amount
                   </span>
